@@ -3,16 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use File;
+use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
+
+    private $userRepository;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
+
         $this->middleware('auth');
     }
 
@@ -25,4 +34,34 @@ class UserController extends Controller
     {
         return view('user.home');
     }
+
+
+    public function showData()
+    {
+        $user = $this->userRepository->update1();
+        return view('user.userview', compact('user'));
+    }
+
+
+    public function update()
+    {
+        $user = $this->userRepository->update1();
+        return view('user.userupdate', compact('user'));
+    }
+
+
+    public function submit(Request $request)
+    {
+
+         $this->validate(request(), [
+            'name' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+
+        $user = $this->userRepository->submitData($request);
+
+        return redirect()->back()->with('message', 'Profile Updated Successfully!');
+
+    }   
 }

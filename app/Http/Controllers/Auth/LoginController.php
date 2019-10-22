@@ -20,7 +20,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+   
     /**
      * Where to redirect users after login.
      *
@@ -31,8 +31,16 @@ class LoginController extends Controller
 
 protected function authenticated(Request $request, $user)
     {
+
+        if (!$user->verified) 
+        {
+            auth()->logout();
+            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+        }
+          //return redirect()->intended($this->redirectPath());
+
         // to admin dashboard
-        if($user->role_id==1) 
+        else if($user->role_id==1) 
         {
             return redirect(route('admin'));
         }

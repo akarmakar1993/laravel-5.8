@@ -14,10 +14,14 @@
                         </div>
                     @endif
 
-                    You are logged in as User!
+                    Hello {{Auth::user()->name}}, Welcome to Laravel 5.8!
                 </div>
             </div>
         </div>
     </div>
+</div>
+<br>
+<div class="container">
+    <h4>Welcome to our website</h4>
 </div>
 @endsection

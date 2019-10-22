@@ -29,8 +29,10 @@ class User
             {
                  return $next($request);
             }
+        }else{
+            abort(404);
         }
         
-        abort(404);  // for other user throw 404 error
+          // for other user throw 404 error
     }
 }

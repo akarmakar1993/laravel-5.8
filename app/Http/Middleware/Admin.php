@@ -17,21 +17,25 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
+
         if(Auth::check())
         {
             // if user is not admin take him to his dashboard
             if ( Auth::user()->role_id!=1 ) 
             {
                  return redirect(route('user'));
+
             }
 
             // allow admin to proceed with request
-            else if ( Auth::user()->role_id==1 ) 
+            else if ( Auth::user()->role_id ==1 ) 
             {
                  return $next($request);
             }
+        }else{
+            abort(404);
         }
 
-        abort(404);  // for other user throw 404 error
+          // for other user throw 404 error
     }
 }
