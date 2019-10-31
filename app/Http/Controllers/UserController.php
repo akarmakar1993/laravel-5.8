@@ -11,16 +11,16 @@ use App\Repositories\UserRepository;
 class UserController extends Controller
 {
 
-    private $userRepository;
+    private $userRepo;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepo)
     {
-        $this->userRepository = $userRepository;
+        $this->$userRepo = $userRepo;
 
         $this->middleware('auth');
     }
@@ -38,7 +38,8 @@ class UserController extends Controller
 
     public function showData()
     {
-        $user = $this->userRepository->update1();
+        $user_table = new User();
+        $user = $this->userRepository->showData($user_tables);
         return view('user.userview', compact('user'));
     }
 
@@ -63,5 +64,5 @@ class UserController extends Controller
 
         return redirect()->back()->with('message', 'Profile Updated Successfully!');
 
-    }   
+    }
 }

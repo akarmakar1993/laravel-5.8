@@ -2,46 +2,26 @@
 
 namespace App\Repositories;
 
-use Illuminate\Http\Request;
+use App\Repositories\AbstactRepository;
 use App\User;
-use Auth;
-use File;
 
-class UserRepository
-
+class UserRepository extends AbstactRepository
 {
-	public function update1()
-	{
-		return $user = Auth::user();
-        
-	}
+    protected $user;
 
-	public function submitData(Request $request)
-	{
-		$user = Auth::user();
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
-        if(($request->hasFile('image')))
-        {
-            if($user->image)
-            {
-                $usersImage = public_path("images/{$user->image}"); // get previous image from folder
-                if (File::exists($usersImage)) 
-                { 
-                    unlink($usersImage);            // unlink or remove previous image from folder
-                }
-            }
+    public function showData($model = NULL)
+  	{
+  		return $model = Auth::user();
 
-            $file = $request->file('image');
-            $img = time() . '-' . $file->getClientOriginalName();
-            $file = $file->move(('images'), $img);
-            $user->image= $img;
-        }
+  	}
 
-       User::where('id', $user->id)
-            ->update([
-                'name' => $request->input('name'),
-                'image' => $user->image
-            ]);
-	}
-
+    // public function getDataByUserId($model = NULL, $id= NULL)
+    // {
+    //     return $model::where('user_id', $id)->get();
+    // }
 }
